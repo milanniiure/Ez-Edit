@@ -1,79 +1,52 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://images.pexels.com/photos/1321909/pexels-photo-1321909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <title>Image Manipulation Web App</title>
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-    
-    <h1>Welcome!</h1>
-
-    <h2 id = "C4">Chapter 4</h2>
-
-    <a href="#CH4">Jump to Chapter 4</a>
-    <ol start="300">
-        <li>Coffee</li>
-        <li>Tea</li>
-        <li>Milk</li>
-    </ol>
-    <ul style="list-style-type:circle;">
-        <li>Coffee</li>
-        <li>Tea</li>
-        <li>Milk</li>
-    </ul>
-    <dl>
-        <dt>Coffee</dt>
-        <dd>Hot coffee</dd>
-        <dt>Milk</dt>
-        <dd>Cold Milk</dd>
-    </dl>
-
-    <!-- Nested HTML Lists -->
-    <ul>
-        <li>Coffee</li>
-        <li>Tea
+    <header>
+        <div class="logo">
+            <img src="https://www.pexels.com/photo/white-and-blue-route-66-logo-1162361/" alt="Logo">
+        </div>
+        <nav>
             <ul>
-                <li>Black Tea</li>
-                <li>Green Tea</li>
+                <li><a href="#"><i class="fas fa-plus"></i> Upload Image</a></li>
+                <li><a href="#">Adjust</a></li>
+                <li><a href="#">Effects</a></li>
+                <li><a href="#">Frames</a></li>
+                <li><a href="#">Text</a></li>
             </ul>
-        </li>
-        <li>Milk</li>
-    </ul>
-
-
-
-
-    <p>Hi this is milan niure designing web page using html and css.</p>
-    <a href="https://www.w3schools.com/" target="_blank">Visit here</a>
+        </nav>
+        <button class="download-btn">Download</button>
+    </header>
     
-    <button onclick="document.location = 'default.asp'" title="CLick here">HTML TUTORIAL</button>
-
-    <a href="https://www.w3schools.com/html/" title="Go to W3Schools HTML section">Visit our HTML Tutorial</a>
-
-    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExanF1ZDBhdTV5amY1ZmxvbWI4eHhwZXNnaXh1dDE2c2xhbm00NGpuZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEjHAUOqG3lSS0f1C/giphy.gif" alt="Laughing Giphy">
-
-
-    <table style="width:200px">
-        <tr>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Country</th>
-        </tr>
-        <tr style="height:200px">
-            <td>LAlfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco</td>
-            <td>Mexico</td>
-        </tr>
-    </table>
-
+    <div class="container">
+        <div class="sidebar">
+            <h2>Adjust</h2>
+            <ul>
+                <li>Crop</li>
+                <li>Rotate & Flip</li>
+                <li>Resize</li>
+                <li>Brightness</li>
+                <li>Contrast</li>
+                <li>Saturation</li>
+                <li>Exposure</li>
+                <li>Shadow</li>
+                <li>Highlights</li>
+                <li>Hue</li>
+                <li>Temperature</li>
+                <li>Tint</li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>Image Preview</h1>
+            <div class="image-preview">
+                <!-- Display processed image here -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
