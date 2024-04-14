@@ -1,0 +1,36 @@
+body{
+    background-color: ivory;
+
+    /* background-image: url('https://images.pexels.com/photos/20304179/pexels-photo-20304179/free-photo-of-a-woman-in-a-red-shirt-is-in-a-field-of-yellow-flowers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:cover; */
+    
+}
+h1{
+    color:black;
+    font-family: verdana;
+    font-size:300%;
+}
+p{
+    
+    color:grey;
+    font-family: courier;
+    font-size: 160%;
+    border: 2px solid powderblue;
+}
+table, th,td{
+    border: 1px solid white;
+    border-radius:10px;
+    border-collapse:collapse;
+}
+th,td{
+    background-color: #96d4d4;
+    border-style:dotted;
+    border-color: #96d4d4;
+}
+img{
+    width: 400px;
+    height: 300px;;
+    float:right;
+}
