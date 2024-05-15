@@ -4,7 +4,7 @@
 
 ## About this repository
 
-This repository contains the code for an image editor named SnapLab.
+This repository contains the code for an image editor named ezEdit.
 
 ## Requirements
 
