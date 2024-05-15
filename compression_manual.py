@@ -1,10 +1,12 @@
+#compression_manual.py
+
 import numpy as np
 import cv2
 
 #lossy compression 8 bit image into 6 bit
 
 def compression():
-    image = cv2.imread('/home/ashish/Downloads/dravid.jpg')
+    image = cv2.imread('/home/milan/Downloads/dravid.jpg')
     clone = image.copy()
     for i in range(image.shape[0]):
         for j in range(image.shape[1]):

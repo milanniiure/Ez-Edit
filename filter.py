@@ -1,3 +1,5 @@
+#filter.py
+
 import numpy as np
 import cv2
 import os
@@ -18,7 +20,7 @@ def transparentOverlay(src, overlay,scale=1):
             src[ i][j] = alpha * overlay[i][j][:3] + (1 - alpha) * src[i][j]
     return src
 
-def hind(cap): 
+def nepal(cap): 
     cap.set(cv2.CAP_PROP_FPS, 30)
     template = cv2.imread("images/flag.jpg")
     while True:
@@ -29,7 +31,7 @@ def hind(cap):
          y=row1/row2
          res = cv2.resize(template, (0, 0), fx = x, fy = y) 
          img = cv2.addWeighted(img,1,res,0.3,0)
-         cv2.putText(img, 'I LOVE MY INDIA', (60,425),cv2.FONT_HERSHEY_DUPLEX,2, ( 124,174,221),5,cv2.LINE_AA)
+         cv2.putText(img, 'I LOVE NEPAL', (60,425),cv2.FONT_HERSHEY_DUPLEX,2, ( 124,174,221),5,cv2.LINE_AA)
          os.chdir(folder)
          cv2.imwrite("filter.jpg",img)
          os.chdir(previous)
@@ -38,7 +40,7 @@ def hind(cap):
          yield (b'--frame\r\n'b'Content-Type: text/plain\r\n\r\n'+strinData+b'\r\n')
     
 
-def flora(cap):
+def phool(cap):
     flora_ori = cv2.imread('images/flower.png', -1)
     flora_ori = cv2.cvtColor(flora_ori, cv2.COLOR_BGR2BGRA)
     cap.set(cv2.CAP_PROP_FPS, 30)
@@ -64,7 +66,7 @@ def flora(cap):
 
 
 
-def handlebar(cap):
+def junga(cap):
     mus_ori = cv2.imread('images/mustache.png', -1) 
     cap.set(cv2.CAP_PROP_FPS, 30)
     while True:
@@ -86,7 +88,7 @@ def handlebar(cap):
          strinData = imgencode.tostring()
          yield (b'--frame\r\n'b'Content-Type: text/plain\r\n\r\n'+strinData+b'\r\n')
 
-def bella(cap):
+def micky(cap):
     mus_ori = cv2.imread('images/pig.png', -1) 
     cap.set(cv2.CAP_PROP_FPS, 30)
     while True:
@@ -119,7 +121,7 @@ def bella(cap):
 
    
 
-def tilak(cap):
+def tika(cap):
     tilak_ori = cv2.imread('images/tilak.png', -1)
     cap.set(cv2.CAP_PROP_FPS, 30)
     while True:
@@ -174,7 +176,7 @@ def thug(cap):
 
 
 
-def lido(cap):
+def thug2(cap):
     specs_ori = cv2.imread('images/beach.png', -1)
     specs_ori = cv2.cvtColor(specs_ori, cv2.COLOR_BGR2BGRA)
     chain_ori = cv2.imread('images/chain.png', -1)
@@ -214,7 +216,7 @@ def lido(cap):
 
 
 
-def polychrome(cap):
+def sunglass(cap):
     specs_ori = cv2.imread('images/funny.png', -1)
     specs_ori = cv2.cvtColor(specs_ori, cv2.COLOR_BGR2BGRA)
     template = cv2.imread("images/temp.png") 
@@ -246,7 +248,7 @@ def polychrome(cap):
 
 
 
-def visor(cap):
+def mask(cap):
     mask_ori = cv2.imread('images/mask.png', -1)
     mask_ori = cv2.cvtColor(mask_ori, cv2.COLOR_BGR2BGRA) 
     template = cv2.imread("images/corona.jpg")
@@ -294,7 +296,7 @@ def rcb(cap):
          y=row1/row2
          res = cv2.resize(template, (0, 0), fx = x, fy = y) 
          img = cv2.addWeighted(img,1,res,0.5,0)
-         cv2.putText(img, 'BOLD ARMY', (60,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 124,174,221),5,cv2.LINE_AA)
+         cv2.putText(img, 'I AM RCB FAN', (60,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 124,174,221),5,cv2.LINE_AA)
          for (x, y, w, h) in faces:
             if h > 0 and w > 0:
                 rcb_symin = int(y-40)
@@ -325,7 +327,7 @@ def mi(cap):
          y=row1/row2
          res = cv2.resize(template, (0, 0), fx = x, fy = y) 
          img = cv2.addWeighted(img,1,res,0.3,0)
-         cv2.putText(img, 'MI PALTAN', (80,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 155,91,3),4,cv2.LINE_AA)
+         cv2.putText(img, 'I AM A MI FAN', (80,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 155,91,3),4,cv2.LINE_AA)
          for (x, y, w, h) in faces:
             if h > 0 and w > 0:
                 mi_symin = int(y-40)
@@ -341,7 +343,7 @@ def mi(cap):
          strinData = imgencode.tostring()
          yield (b'--frame\r\n'b'Content-Type: text/plain\r\n\r\n'+strinData+b'\r\n')
 
-def nags(cap):
+def gunda(cap):
     rcb_ori = cv2.imread('images/band.png', -1)
     specs_ori= cv2.imread('images/nag.png', -1)
     mus_ori = cv2.imread('images/nag_mus.png', -1)

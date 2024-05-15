@@ -1,3 +1,5 @@
+#edit.py
+
 import cv2
 import numpy as np
 import getpass
@@ -77,24 +79,30 @@ def denoise(path,value):
     
 def downloads(path):
     username = getpass.getuser()
-    folder = ''
     gmt = time.gmtime()
     ts = calendar.timegm(gmt)
-    ts=str(ts)
-    if platform.system()=='Linux':
-        folder += '/home/'+username+'/Downloads/'
+    ts = str(ts)
+    if platform.system() == 'Linux':
+        folder = '/home/' + username + '/Downloads/'
     else:
-        folder += 'C:\Downloads'
+        folder = 'C:\\Downloads'
     image = cv2.imread(path)
-    previous = os.getcwd()
-    os.chdir(folder)
-    if path.count('jpg')>0 or path.count('jpeg')>0 :
-       outpath = "SnapLab_Edited_"+ts+".jpg"
-       cv2.imwrite(outpath,image)                 
-    elif path.count('png')>0:
-       outpath = "SnapLab_Edited_"+ts+".png"
-       cv2.imwrite(outpath,image)              
-    os.chdir(previous)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    if path.count('jpg') > 0 or path.count('jpeg') > 0:
+        outpath = os.path.join(folder, "SnapLab_Edited_" + ts + ".jpg")
+        success = cv2.imwrite(outpath, image)
+        if success:
+            print("Image successfully saved to:", outpath)
+        else:
+            print("Error: Failed to save image")
+    elif path.count('png') > 0:
+        outpath = os.path.join(folder, "SnapLab_Edited_" + ts + ".png")
+        success = cv2.imwrite(outpath, image)
+        if success:
+            print("Image successfully saved to:", outpath)
+        else:
+            print("Error: Failed to save image")
 
 #brightness()
 #contrast()

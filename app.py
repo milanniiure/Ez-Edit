@@ -1,4 +1,9 @@
-from flask import Flask, render_template ,request,flash,Response
+#app.py
+
+from flask import Flask, render_template ,request,flash,Response,url_for,session,redirect
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
 from werkzeug.utils import secure_filename
 import wget
 import cv2
@@ -10,10 +15,77 @@ import platform
 from compression import compression
 from effects import oreo,mercury,alchemy,wacko,unstable,ore,contour,snicko,indus,spectra,molecule,lynn,download
 from edit import brightness,contrast,blur,resize,denoise,rotate,sharp,downloads
-from filter import hind,flora,handlebar,bella,tilak,thug,lido,polychrome,visor,rcb,mi,nags
+from filter import nepal,phool,junga,micky,tika,thug,thug2,sunglass,mask,rcb,mi,gunda
 
 app = Flask(__name__)
-app.config['SECRET_KEY']='mySnapLab'
+app.config['SECRET_KEY']='ezEdit'
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_DB'] = 'auth_system'
+
+UPLOAD_FOLDER = 'static/images/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+mysql = MySQL(app)
+
+@app.route('/')
+@app.route('/login', methods =['GET', 'POST'])
+def login():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        username = request.form['username']
+        password = request.form['password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE username = % s AND password = % s', (username, password, ))
+        account = cursor.fetchone()
+        if account:
+            session['loggedin'] = True
+            session['id'] = account['id']
+            session['username'] = account['username']
+            msg = 'Logged in successfully !'
+            return render_template('home.html', msg = msg)
+        else:
+            msg = 'Incorrect username / password !'
+    return render_template('login.html', msg = msg)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('login'))
+
+
+@app.route('/register', methods =['GET', 'POST'])
+def register():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form :
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE username = % s', (username, ))
+        account = cursor.fetchone()
+        if account:
+            msg = 'Account already exists !'
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address !'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers !'
+        elif not username or not password or not email:
+            msg = 'Please fill out the form !'
+        else:
+            cursor.execute('INSERT INTO accounts VALUES (NULL, % s, % s, % s)', (username, password, email, ))
+            mysql.connection.commit()
+            msg = 'You have successfully registered !'
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('register.html', msg = msg)
+
+
 
 
 
@@ -48,109 +120,94 @@ resize_value=''
 rotate_value=''
 denoise_value=''
 blur_value='0'
-@app.route('/edit',methods=['GET','POST'])
+
+@app.route('/edit', methods=['GET', 'POST'])
 def edit():
-    if request.method=='POST':
-       global edit_img
-       global edited
-       global brightness_value
-       global contrast_value
-       global sharp_value
-       global resize_value
-       global rotate_value
-       global denoise_value
-       global blur_value
-       if request.form['button']=='Upload' and request.form['path']!='' and  request.files['local_file'].filename=='':
-           path = request.form['path']
-           a = path.split('/')
-           previous = os.getcwd()
-           edit_img=previous+'/static/images/trash/'+a[len(a)-1]
-           if os.path.isfile(previous+'/static/images/trash/'+a[len(a)-1]):
-              return render_template('edit.html',image_filename='../static/images/trash/'+a[len(a)-1],brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
-           folder = previous +'/static/images/trash/'
-           os.chdir(folder)
-           image_filename = wget.download(path)
-           os.chdir(previous)
-           return render_template('edit.html',image_filename='../static/images/trash/'+image_filename,brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
+    if 'username' not in session:
+        return redirect(url_for('login'))  # Ensure user is logged in
 
-       elif request.form['button']=='Upload' and request.form['path']=='' and  request.files['local_file'].filename!='':
-            f = request.files['local_file']
-            previous = os.getcwd()
-            edit_img=previous+'/static/images/trash/'+f.filename
-            folder = previous +'/static/images/trash/'
-            os.chdir(folder)
-            f.save(secure_filename(f.filename))
-            os.chdir(previous)
-            return render_template('edit.html',image_filename='../static/images/trash/'+f.filename,brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
-     
-       elif request.form['button']=='Apply' and edit_img!='':
-            brightness_value = request.form['brightness']
-            contrast_value = request.form['Contrast']
-            sharp_value = request.form['type']
-            resize_value = request.form['type2']
-            rotate_value = request.form['type1']
-            denoise_value = request.form['type3']
-            blur_value = request.form['Blur']
-            previous = os.getcwd()
-            folder = previous +'/static/images/trash/'
-            if edit_img.count('jpeg')>0 or edit_img.count("jpg")>0:
-                edited=folder+'edited.jpg'
-            elif edit_img.count('png')>0:
-                 edited=folder+'edited.png'
-            os.chdir(folder)
-            if brightness_value:
-               brightness(edit_img,int(brightness_value))
-            if contrast_value:
-               contrast(edited,float(contrast_value))
-            if sharp_value!='none':
-               sharp(edited,sharp_value)
-            if resize_value!='none':
-               resize(edited,resize_value)
-            if rotate_value!='none': 
-               rotate(edited,rotate_value)
-            if denoise_value!='none':
-               denoise(edited,denoise_value)
-            if blur_value:
-               blur(edited,int(blur_value))      
-            os.chdir(previous)           
- 
-            if edit_img.count('jpeg')>0 or edit_img.count("jpg")>0:
-                return render_template('edit.html',image_filename='../static/images/trash/edited.jpg',brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
-            elif edit_img.count('png')>0:
-                return render_template('edit.html',image_filename='../static/images/trash/edited.jpg',brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
-            else:
-               flash("Oops Something went wrong !")
-               return render_template('edit.html',brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
+    if request.method == 'POST':
+        if 'button' in request.form:
+            if request.form['button'] == 'Upload':
+                if request.form['path'] != '' and request.files['local_file'].filename == '':
+                    path = request.form['path']
+                    a = path.split('/')
+                    previous = os.getcwd()
+                    edit_img = os.path.join(previous, 'static/images/uploads', a[-1])
+                    if os.path.isfile(edit_img):
+                        session['uploaded_image'] = edit_img
+                        return render_template('edit.html', image_filename='../static/images/uploads/' + a[-1])
+                    folder = os.path.join(previous, 'static/images/uploads')
+                    os.chdir(folder)
+                    image_filename = wget.download(path)
+                    os.chdir(previous)
+                    session['uploaded_image'] = os.path.join(folder, image_filename)
+                    return render_template('edit.html', image_filename='../static/images/uploads/' + image_filename)
 
-       elif request.form['button']=='Download' and edited!='':
-            downloads(edited)
-            edit_img=''
-            edited=''
-            brightness_value='0'
-            contrast_value='1'
-            sharp_value=''
-            resize_value=''
-            rotate_value=''
-            denoise_value=''
-            blur_value='0'
-            flash("Successfully Downloaded! Image available in Downloads")
-            return render_template('edit.html',brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
-       else:
-            edit_img=''
-            edited=''
-            brightness_value='0'
-            contrast_value='1'
-            sharp_value=''
-            resize_value=''
-            rotate_value=''
-            denoise_value=''
-            blur_value='0'
-            flash("Oops Something went wrong !")
-            return render_template('edit.html',brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
+                elif request.form['path'] == '' and request.files['local_file'].filename != '':
+                    f = request.files['local_file']
+                    previous = os.getcwd()
+                    edit_img = os.path.join(previous, 'static/images/uploads', f.filename)
+                    folder = os.path.join(previous, 'static', 'images', 'uploads')
+                    os.chdir(folder)
+                    f.save(secure_filename(f.filename))
+                    os.chdir(previous)
+                    session['uploaded_image'] = edit_img
+                    return render_template('edit.html', image_filename='../static/images/uploads/' + f.filename)
 
-    return render_template('edit.html',brightness_value=brightness_value,contrast_value=contrast_value,blur_value=blur_value,sharp_value=sharp_value,denoise_value=denoise_value,rotate_value=rotate_value,resize_value=resize_value)
+            elif request.form['button'] == 'Apply' and 'uploaded_image' in session:
+                edit_img = session['uploaded_image']
+                brightness_value = request.form['brightness']
+                contrast_value = request.form['Contrast']
+                sharp_value = request.form['type']
+                resize_value = request.form['type2']
+                rotate_value = request.form['type1']
+                denoise_value = request.form['type3']
+                blur_value = request.form['Blur']
+                previous = os.getcwd()
+                folder = os.path.join(previous, 'static/images/uploads')
+                edited_image_path = ''  # Initialize edited image path
 
+                if edit_img.endswith(('jpeg', 'jpg')):
+                    edited = os.path.join(folder, 'edited.jpg')
+                    edited_image_path = 'edited.jpg'
+                elif edit_img.endswith('png'):
+                    edited = os.path.join(folder, 'edited.png')
+                    edited_image_path = 'edited.png'
 
+                os.chdir(folder)
+                if brightness_value:
+                    brightness(edit_img, int(brightness_value))
+                if contrast_value:
+                    contrast(edited, float(contrast_value))
+                if sharp_value != 'none':
+                    sharp(edited, sharp_value)
+                if resize_value != 'none':
+                    resize(edited, resize_value)
+                if rotate_value != 'none':
+                    rotate(edited, rotate_value)
+                if denoise_value != 'none':
+                    denoise(edited, denoise_value)
+                if blur_value:
+                    blur(edited, int(blur_value))
+                os.chdir(previous)
+
+                if edited_image_path:
+                    session['edited_image'] = edited
+                    return render_template('edit.html', image_filename='../static/images/uploads/' + edited_image_path)
+                else:
+                    flash("Oops Something went wrong !")
+                    return render_template('edit.html')
+
+            elif request.form['button'] == 'Download' and 'edited_image' in session:
+                downloads(session['edited_image'])
+                session.pop('uploaded_image', None)
+                session.pop('edited_image', None)
+                flash("Successfully Downloaded! Image available in Downloads")
+                return render_template('edit.html', brightness_value='0', contrast_value='1', blur_value='0', sharp_value='', denoise_value='', rotate_value='', resize_value='')
+
+    uploaded_image = session.get('uploaded_image')
+    return render_template('edit.html', image_filename='../static/images/uploads/' + os.path.basename(uploaded_image) if uploaded_image else '', brightness_value='0', contrast_value='1', blur_value='0', sharp_value='', denoise_value='', rotate_value='', resize_value='')
 
 ###########################################################################################compress page
 com_img=''
@@ -451,30 +508,30 @@ def video():
      if value==0:     
          return Response(stream(),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==1:
-         print("Entered Hind video")
-         return Response(hind(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         print("Entered Nepal video")
+         return Response(nepal(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==2:
-         return Response(handlebar(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(junga(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==3:
-         return Response(flora(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(phool(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==4:
-         return Response(bella(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(micky(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==5:
-         return Response(tilak(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(tika(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==6:
          return Response(thug(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==7:
-         return Response(lido(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(thug2(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==8:
-         return Response(polychrome(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(sunglass(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==9:
-         return Response(visor(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(mask(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==10:
          return Response(mi(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==11:
          return Response(rcb(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==12:
-         return Response(nags(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
+         return Response(gunda(cap),mimetype='multipart/x-mixed-replace;boundary=frame')
      elif value==13:
          return Response(stop(),mimetype='multipart/x-mixed-replace;boundary=frame')
 
@@ -485,30 +542,30 @@ def filters():
      global flag
      if request.method=='POST':
         print("Entered")
-        if request.form['button']=='Hind':
-               print("Entered Hind")
+        if request.form['button']=='Nepal':
+               print("Entered Nepal")
                value=1       
-        elif request.form['button']=='Handlebar':
+        elif request.form['button']=='Junga':
                value=2
-        elif request.form['button']=='Flora':
+        elif request.form['button']=='Phool':
                value=3
-        elif request.form['button']=='Bella':
+        elif request.form['button']=='Micky':
                value=4
-        elif request.form['button']=='Tilak':
+        elif request.form['button']=='Tika':
                value=5
         elif request.form['button']=='Thug':
                value=6
-        elif request.form['button']=='Lido':
+        elif request.form['button']=='Thug2':
                value=7
-        elif request.form['button']=='Polychrome':
+        elif request.form['button']=='Sunglass':
                value=8
-        elif request.form['button']=='Visor':
+        elif request.form['button']=='Mask':
                value=9
         elif request.form['button']=='MI':
                value=10
         elif request.form['button']=='RCB':
                value=11
-        elif request.form['button']=='Nags':
+        elif request.form['button']=='Gunda':
                value=12
         elif request.form['button']=='Clear':
                value=0
@@ -545,4 +602,4 @@ def filters():
 
 ###############################################################################################main function
 if __name__ == '__main__':
-	app.run(debug=False,port=8080)
+	app.run(debug=True,port=5000)
