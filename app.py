@@ -110,16 +110,26 @@ def about():
 
 
 
-############################################################################################edit page
-edit_img=''
-edited=''
-brightness_value='0'
-contrast_value='1'
-sharp_value=''
-resize_value=''
-rotate_value=''
-denoise_value=''
-blur_value='0'
+
+
+
+
+
+
+
+
+
+
+# Edit route
+edit_img = ''
+edited = ''
+brightness_value = '0'
+contrast_value = '1'
+sharp_value = ''
+resize_value = ''
+rotate_value = ''
+denoise_value = ''
+blur_value = '0'
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
@@ -194,6 +204,7 @@ def edit():
 
                 if edited_image_path:
                     session['edited_image'] = edited
+                    session['edited_image_path'] = edited_image_path  # Store edited image path in session
                     return render_template('edit.html', image_filename='../static/images/uploads/' + edited_image_path)
                 else:
                     flash("Oops Something went wrong !")
@@ -209,48 +220,70 @@ def edit():
     uploaded_image = session.get('uploaded_image')
     return render_template('edit.html', image_filename='../static/images/uploads/' + os.path.basename(uploaded_image) if uploaded_image else '', brightness_value='0', contrast_value='1', blur_value='0', sharp_value='', denoise_value='', rotate_value='', resize_value='')
 
-###########################################################################################compress page
-com_img=''
-@app.route('/compression',methods=['GET','POST'])                        
-def compress():        
-    if request.method=='POST':
-       global com_img
-       if request.form['button']=='Upload' and request.form['path']!='' and  request.files['local_file'].filename=='':
-           path = request.form['path']
-           a = path.split('/')
-           previous = os.getcwd()
-           com_img=previous+'/static/images/trash/'+a[len(a)-1]
-           if os.path.isfile(previous+'/static/images/trash/'+a[len(a)-1]):
-              return render_template('compression.html',image_filename='../static/images/trash/'+a[len(a)-1])
-           folder = previous +'/static/images/trash/'
-           os.chdir(folder)
-           image_filename = wget.download(path)
-           os.chdir(previous)
-           return render_template('compression.html',image_filename='../static/images/trash/'+image_filename)
 
-       elif request.form['button']=='Upload' and request.form['path']=='' and  request.files['local_file'].filename!='':
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############compression route
+com_img = ''
+
+@app.route('/compression', methods=['GET', 'POST'])
+def compress():
+    global com_img
+    
+    if request.method == 'POST':
+        if request.form['button'] == 'Upload' and request.form['path'] != '' and request.files['local_file'].filename == '':
+            path = request.form['path']
+            a = path.split('/')
+            previous = os.getcwd()
+            com_img = session.get('edited_image_path', '')  # Retrieve edited image path from session
+            if com_img:
+                return render_template('compression.html', image_filename='../static/images/uploads/' + com_img)
+            else:
+                flash("No image found!")
+                return render_template('compression.html')
+
+        elif request.form['button'] == 'Upload' and request.form['path'] == '' and request.files['local_file'].filename != '':
             typ = request.form['type']
             f = request.files['local_file']
             previous = os.getcwd()
-            com_img=previous+'/static/images/trash/'+f.filename
-            folder = previous +'/static/images/trash/'
+            com_img = os.path.join(previous, 'static/images/uploads', f.filename)
+            folder = os.path.join(previous, 'static/images/uploads')
             os.chdir(folder)
             f.save(secure_filename(f.filename))
             os.chdir(previous)
-            return render_template('compression.html',image_filename='../static/images/trash/'+f.filename)
+            return render_template('compression.html', image_filename='../static/images/uploads/' + f.filename)
 
-       elif request.form['button']=='Compress' and com_img!='':
-           typ = request.form['type']
-           compression(com_img,typ)
-           com_img=''
-           flash("Successfully compressed! Compressed Image available in Downloads.")
-           return render_template('compression.html')
+        elif request.form['button'] == 'Compress' and com_img != '':
+            typ = request.form['type']
+            compression(com_img, typ)
+            com_img = ''
+            flash("Successfully compressed! Compressed Image available in Downloads.")
+            return render_template('compression.html')
 
-       else:
-            com_img=''
+        else:
+            com_img = ''
             flash("Oops Something went wrong !")
             return render_template('compression.html')
+
+    # Check if there is an edited image in the session when GET request
+    com_img = session.get('edited_image_path', '')
+    if com_img:
+        return render_template('compression.html', image_filename='../static/images/uploads/' + com_img)
+
     return render_template('compression.html')
+
 
 
 
@@ -501,7 +534,7 @@ def stop():
     if cap.isOpened():
         cap.release()
 
-   
+
 
 @app.route('/filters/video')
 def video():

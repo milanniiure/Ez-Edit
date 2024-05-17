@@ -1,52 +1,88 @@
-/* Store this code in 'style.css' file inside the 'static' folder*/
+/* style.css */
 
-.header{
-    padding: 5px 120px;
-    width: 150px;
-    height: 70px;
-    background-color: #236B8E; 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-.border{
-    padding: 80px 50px;
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
     width: 400px;
-    height: 450px;
-    border: 1px solid #236B8E;
-    border-radius: 0px;
-    background-color: #9AC0CD;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #5f91e683;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
 }
 
 .btn {
-    padding: 10px 40px;
-    background-color: #236B8E; 
-    color: #FFFFFF;
-    font-style: oblique;
-    font-weight: bold;
-    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d563dd;
+    color: #fff;
+    cursor: pointer;
 }
 
-.textbox{
-    padding: 10px 40px;
-    background-color: #236B8E; 
-    color: #FFFFFF;
-    border-radius: 10px;
-}
-    
-::placeholder {
-    color: #FFFFFF;
-    opacity: 1;
-    font-style: oblique;
-    font-weight: bold;
+.btn:hover {
+    background-color: #b300aa;
 }
 
-.word{
-    color: #FFFFFF;
-    font-style: oblique;
-    font-weight: bold;
+.card-footer {
+    text-align: center;
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
-.bottom{
-    color: #236B8E;
-    font-style: oblique;
-    font-weight: bold;
+.card-footer p {
+    margin: 0;
 }
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.logo {
+    width: 100px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+

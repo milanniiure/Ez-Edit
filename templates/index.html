@@ -1,22 +1,26 @@
 <!-- Store this code in 'index.html' file inside the 'templates' folder-->
 
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title> Index </title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">					 
-	</head>
-	<body></br></br></br></br></br>
-		<div align="center">
-		<div align="center" class="border">
-			<div class="header">
-				<h1 class="word">Index</h1>
-			</div></br></br></br>
-				<h1 class="bottom">
-					Hi {{session.username}}!!</br></br> Welcome to the index page...				 
-				</h1></br></br></br>
-				<a href="{{ url_for('logout') }}" class="btn">Logout</a>
-		</div>
-		</div>
-	</body>
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to PhotoEdit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="content">
+        <h1>Welcome to PhotoEdit</h1>
+        <p>Your go-to destination for all your photo editing needs.</p>
+        <p>Whether you're a professional photographer or just love to snap photos on your phone, PhotoEdit has the tools you need to enhance and transform your images.</p>
+        <a href="login.html" class="btn">Get Started</a>
+    </div>
+</div>
+
+</body>
 </html>
+

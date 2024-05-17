@@ -1,28 +1,40 @@
-<!-- Store this code in 'register.html' file inside the 'templates' folder -->
+<!-- register.html -->
 
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title> Register </title>
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">			 
-	</head>
-	<body></br></br></br></br></br>
-		<div align="center">
-		<div align="center" class="border">
-			<div class="header">
-				<h1 class="word">Register</h1>
-			</div></br></br></br>
-			<h2 class="word">
-				<form action="{{ url_for('register') }}" method="post">
-				<div class="msg">{{ msg }}</div>
-					<input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"/></br></br>
-					<input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"/></br></br>
-					<input id="email" name="email" type="text" placeholder="Enter Your Email ID" class="textbox"/></br></br>
-					<input type="submit" class="btn" value="Sign Up"></br>
-				</form>
-			</h2>
-			<p class="bottom">Already have an account? <a class="bottom" href="{{url_for('login')}}"> Sign In here</a></p>
-		</div>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | ezEdit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create an Account</h1>
+                <img src="static/images/logo.svg" alt="PhotoEdit Logo" class="logo">
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('register') }}" method="post">
+                    <div class="form-group">
+                        <input id="username" name="username" type="text" placeholder="Username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input id="password" name="password" type="password" placeholder="Password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input id="email" name="email" type="email" placeholder="Email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <p>Already have an account? <a href="{{url_for('login')}}">Log In</a></p>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
