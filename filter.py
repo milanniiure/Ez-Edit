@@ -296,7 +296,7 @@ def rcb(cap):
          y=row1/row2
          res = cv2.resize(template, (0, 0), fx = x, fy = y) 
          img = cv2.addWeighted(img,1,res,0.5,0)
-         cv2.putText(img, 'I AM RCB FAN', (60,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 124,174,221),5,cv2.LINE_AA)
+         cv2.putText(img, 'Hi RCB', (60,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 124,174,221),5,cv2.LINE_AA)
          for (x, y, w, h) in faces:
             if h > 0 and w > 0:
                 rcb_symin = int(y-40)
@@ -327,7 +327,7 @@ def mi(cap):
          y=row1/row2
          res = cv2.resize(template, (0, 0), fx = x, fy = y) 
          img = cv2.addWeighted(img,1,res,0.3,0)
-         cv2.putText(img, 'I AM A MI FAN', (80,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 155,91,3),4,cv2.LINE_AA)
+         cv2.putText(img, 'A MI FAN', (80,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 155,91,3),4,cv2.LINE_AA)
          for (x, y, w, h) in faces:
             if h > 0 and w > 0:
                 mi_symin = int(y-40)
@@ -353,7 +353,7 @@ def gunda(cap):
          ret, img = cap.read()
          gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
          faces = face_cascade.detectMultiScale(gray, 1.2, 5, 0, (120, 120), (350, 350))
-         cv2.putText(img, 'PEAS!', (200,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 124,174,221),5,cv2.LINE_AA)
+         cv2.putText(img, 'HELLO!', (200,400),cv2.FONT_HERSHEY_DUPLEX,3, ( 124,174,221),5,cv2.LINE_AA)
          for (x, y, w, h) in faces:
             if h > 0 and w > 0:
                 glass_symin = int(y + 1.5 * h / 5)
@@ -384,16 +384,5 @@ def gunda(cap):
 
 
 
-#hind()
-#flora()
-#handlebar()
-#bella()
-#tilak()
-#thug()
-#lido()
-#polychrome()
-#mask()
-#rcb()
-#mi()
-#nags()
+
 

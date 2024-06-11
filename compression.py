@@ -7,9 +7,22 @@ import platform
 import os
 import calendar
 import time
- 
-jpg={'max':25,'mid':50,'min':75}
-png={'max':9,'mid':6,'min':3}
+
+
+# Compression levels for JPEG images
+jpg = {
+    'low': 25,     # Lowest quality, highest compression
+    'medium': 50,  # Moderate quality, moderate compression
+    'high': 75     # Highest quality, lowest compression
+}
+
+# Compression levels for PNG images
+png = {
+    'low': 0,     # Highest compression, smallest file size
+    'medium': 5,  # Moderate compression
+    'high': 9     # Lowest compression, highest quality
+}
+
 
 def save(path, image, jpg_quality=None, png_compression=None):
   if jpg_quality:
@@ -18,28 +31,30 @@ def save(path, image, jpg_quality=None, png_compression=None):
     cv2.imwrite(path, image, [int(cv2.IMWRITE_PNG_COMPRESSION), png_compression])         
   else:
     cv2.imwrite(path, image)
- 
-def compression(path,typ):
+
+def compression(path, typ):
     username = getpass.getuser()
     folder = ''
     gmt = time.gmtime()
     ts = calendar.timegm(gmt)
-    ts=str(ts)
-    if platform.system()=='Linux':
-        folder += '/home/'+username+'/Downloads/'
+    ts = str(ts)
+    if platform.system() == 'Linux':
+        folder += '/home/' + username + '/Downloads/'
     else:
         folder += 'C:\Downloads'
     image = cv2.imread(path)
     previous = os.getcwd()
     os.chdir(folder)
-    if path.count('jpg')>0 or path.count('jpeg')>0 :
-       outpath = "SnapLab_compressed"+ts+".jpg"
-       save(outpath,image,jpg_quality=jpg[typ])                #jpg 0-100 
-    elif path.count('png')>0:
-       outpath = "SnapLab_compressed"+ts+".png"
-       save(outpath, image,png_compression=png[typ])              #png 0-9 high means small but more time
-    else:
-        save('unsupported',image)
-    os.chdir(previous)
-   
-
+    try:
+        if path.lower().endswith(('jpg', 'jpeg')) and typ in jpg:
+            outpath = "ezEdit_compressed_" + ts + ".jpg"
+            save(outpath, image, jpg_quality=jpg[typ])
+        elif path.lower().endswith('png') and typ in png:
+            outpath = "ezEdit_compressed_" + ts + ".png"
+            save(outpath, image, png_compression=png[typ])
+        else:
+            raise ValueError("Unsupported image format or compression type")
+    except ValueError as e:
+        print(e)
+    finally:
+        os.chdir(previous)

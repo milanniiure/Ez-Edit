@@ -85,4 +85,9 @@ a:hover {
     width: 100px; /* Adjust size as needed */
     height: auto; /* Maintain aspect ratio */
 }
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
 

@@ -142,3 +142,13 @@ footer p{
     display: inline;
     color: #888;
 }
+/* Add this to home.css or template.css */
+.main-nav li a .ion-log-out {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.main-nav li a {
+    display: flex;
+    align-items: center;
+}

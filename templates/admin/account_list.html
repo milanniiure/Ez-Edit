@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accounts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
+                <h1>Admin Panel</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin_home') }}">Home</a></li>
+                    <li><a href="{{ url_for('accountview.index') }}">Accounts</a></li>
+                    <li><a href="{{ url_for('accountview.create') }}">Create New Account</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Accounts</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for account in accounts %}
+                <tr>
+                    <td>{{ account[1] }}</td>
+                    <td>{{ account[2] }}</td>
+                    <td>{{ account[3] }}</td>
+                    <td class="action-buttons">
+                        <a href="{{ url_for('accountview.edit', id=account[0]) }}" class="btn">Edit</a>
+                        <form action="{{ url_for('accountview.delete', id=account[0]) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        <p>Admin Panel - ezEdit</p>
+    </footer>
+</body>
+</html>

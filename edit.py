@@ -7,6 +7,9 @@ import platform
 import os
 import calendar
 import time
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
+import wget
 
 def apply(path,edit_img,name="edited"):
    if path.count("jpg")>0 or path.count("jpeg")>0:
@@ -90,14 +93,14 @@ def downloads(path):
     if not os.path.exists(folder):
         os.makedirs(folder)
     if path.count('jpg') > 0 or path.count('jpeg') > 0:
-        outpath = os.path.join(folder, "SnapLab_Edited_" + ts + ".jpg")
+        outpath = os.path.join(folder, "ezEdit_Edited_" + ts + ".jpg")
         success = cv2.imwrite(outpath, image)
         if success:
             print("Image successfully saved to:", outpath)
         else:
             print("Error: Failed to save image")
     elif path.count('png') > 0:
-        outpath = os.path.join(folder, "SnapLab_Edited_" + ts + ".png")
+        outpath = os.path.join(folder, "ezEdit_Edited_" + ts + ".png")
         success = cv2.imwrite(outpath, image)
         if success:
             print("Image successfully saved to:", outpath)

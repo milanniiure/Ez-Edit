@@ -1,0 +1,162 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  /* Container */
+  .container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  /* Header */
+  header {
+    background: linear-gradient(45deg, #42a5f5, #aa4ac3c9);
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #42a5f5 3px solid;
+  }
+  
+  header a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+  
+  header ul {
+    padding: 0;
+    list-style: none;
+  }
+  
+  header li {
+    display: inline;
+    padding: 0 20px 0 20px;
+  }
+  
+  header #branding {
+    float: left;
+  }
+  
+  header #branding img {
+    height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  header nav {
+    float: right;
+    margin-top: 10px;
+  }
+  
+  /* Account Form */
+  form {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6a1b9a;
+  }
+  
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  form button {
+    background: #6a1b9a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background: #42a5f5;
+  }
+  
+  /* Account List */
+  table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #8d14d8;
+    color: #fff;
+  }
+  
+  td {
+    background-color: #f4f4f4;
+  }
+  
+  a.btn {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background: #6a1b9a;
+    display: inline-block;
+  }
+  
+  a.btn:hover {
+    background: #42a5f5;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .action-buttons button {
+    flex: 1;
+  }
+  
+  button.delete-btn {
+    /* background: #b109dbd7;  */  /* remove this line */
+    border-radius: 10;
+  }
+  
+  button.delete-btn:hover {
+    background: #f40800;
+  }
+  
+  /* Footer */
+  footer {
+    background: #b060e1;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+  
